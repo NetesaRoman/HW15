@@ -3,10 +3,10 @@ package models;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Box<F extends Fruit> {
+public class Box<T extends Fruit> {
 
     private float weight = 0;
-    private List<F> fruits = new ArrayList<>();
+    private List<T> fruits = new ArrayList<>();
 
     public void setWeight(float weight) {
         this.weight = weight;
@@ -16,29 +16,29 @@ public class Box<F extends Fruit> {
         return weight;
     }
 
-    public List<F> getFruits() {
+    public List<T> getFruits() {
         return fruits;
     }
 
-    public void addFruit(F newFruit) {
-        if (!isNull(newFruit)) {
+    public void addFruit(T newFruit) {
+        if (newFruit != null) {
             fruits.add(newFruit);
             weight += newFruit.getWeight();
         }
     }
 
-    public void addFruits(F[] newFruits) {
-        if (!isNull(newFruits)) {
-            for (F fruit : newFruits) {
+    public void addFruits(T[] newFruits) {
+        if (newFruits != null) {
+            for (T fruit : newFruits) {
                 fruits.add(fruit);
                 weight += fruit.getWeight();
             }
         }
     }
 
-    public void addFruitsFromList(List<F> newFruits) {
-        if (!isNull(newFruits)) {
-            for (F fruit : newFruits) {
+    public void addFruits(List<T> newFruits) {
+        if (newFruits != null) {
+            for (T fruit : newFruits) {
                 fruits.add(fruit);
                 weight += fruit.getWeight();
             }
@@ -46,20 +46,22 @@ public class Box<F extends Fruit> {
     }
 
     public boolean compare(Box otherBox) {
-        return getWeight() == otherBox.getWeight();
+        if(otherBox != null) {
+            return getWeight() == otherBox.getWeight();
+        }return false;
     }
 
-    public Box<F> merge(Box<F> otherBox) {
-        Box<F> result = new Box<>();
+    public Box<T> merge(Box<T> otherBox) {
+        Box<T> result = new Box<>();
 
-        if (!isNull(otherBox) && !isNull(otherBox.getFruits())) {
-            for (F fruit : otherBox.getFruits()) {
+        if (otherBox != null && otherBox.getFruits() != null) {
+            for (T fruit : otherBox.getFruits()) {
                 result.addFruit(fruit);
                 result.setWeight(result.getWeight() + fruit.getWeight());
             }
         }
-        if (!isNull(fruits)) {
-            for (F fruit : fruits) {
+        if (!fruits.isEmpty()) {
+            for (T fruit : fruits) {
                 result.addFruit(fruit);
                 result.setWeight(result.getWeight() + fruit.getWeight());
             }
@@ -69,9 +71,5 @@ public class Box<F extends Fruit> {
         return result;
     }
 
-    private static <T> boolean isNull(T obj) {
-        if (obj == null) {
-            return true;
-        } else return false;
-    }
+
 }
